@@ -69,7 +69,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                     <p className="text-red-500 text-sm">{errors.description}</p>
                 )}
             </div>
-            {/* Campo de Prioridad */}
             <div>
                 <label className="block text-gray-700 text-sm font-bold mb-1">
                     Prioridad
@@ -84,8 +83,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                     <option value="alta">Alta</option>
                 </select>
             </div>
-
-            {/* Campo de Estado */}
             <div>
                 <label className="block text-gray-700 text-sm font-bold mb-1">
                     Estado

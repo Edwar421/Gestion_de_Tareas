@@ -9,7 +9,7 @@ interface TaskCardProps {
     title: string;
     description: string;
     priority: string;
-    status: string;
+    status: "pendiente" | "en progreso" | "completada";
     onTaskUpdated: () => void;
     onTaskEdited: () => void;
     onShowModal: (
@@ -32,11 +32,28 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     const [isChecked, setIsChecked] = useState(status === "completada");
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const handleCheckboxChange = async () => {
-        const newStatus = isChecked ? "pendiente" : "completada";
-        setIsChecked(!isChecked);
-        await updateTask(parseInt(id), title, description, priority, newStatus);
-        onTaskUpdated();
+    const handleStatusChange = async () => {
+        let newStatus = "pendiente";
+        if (status === "pendiente") newStatus = "en progreso";
+        else if (status === "en progreso") newStatus = "completada";
+        //else newStatus = "pendiente"; // reinicia el ciclo
+
+        try {
+            await updateTask(parseInt(id), title, description, priority, newStatus);
+            onShowModal(
+                "Éxito",
+                `Estado cambiado a "${newStatus}".`,
+                <FaCheckCircle className="w-12 h-12 text-sky-400 dark:text-white" />
+            );
+            onTaskUpdated();
+        } catch (error) {
+            console.error("Error cambiando el estado:", error);
+            onShowModal(
+                "Error",
+                "No se pudo cambiar el estado de la tarea.",
+                <FaTimesCircle className="w-12 h-12 text-sky-400 dark:text-white" />
+            );
+        }
     };
     const handleDelete = async () => {
         try {
@@ -93,7 +110,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             <div className="flex items-start">
                 <div className="flex items-center h-full mx-2 mt-2.5">
                     <button
-                        onClick={handleCheckboxChange}
+                        onClick={handleStatusChange}
                         className={`w-4 h-4 rounded-full flex items-center justify-center ${isChecked
                             ? "bg-green-500 text-white border border-green-500"
                             : "bg-gray-300 text-gray-700"

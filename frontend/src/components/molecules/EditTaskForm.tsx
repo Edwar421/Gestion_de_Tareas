@@ -86,7 +86,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 
                 <select value={status} onChange={(e) => setStatus(e.target.value)}>
                     <option value="pendiente">Pendiente</option>
-                    <option value="pendiente">En Progreso</option>
+                    <option value="en progreso">En Progreso</option>
                     <option value="completada">Completada</option>
                 </select>
             </div>
