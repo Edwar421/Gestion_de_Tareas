@@ -79,7 +79,7 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
             <div className="p-6 max-w-4xl mx-auto ">
                 <div className="flex items-end justify-between mb-6">
                     <p className="flex text-sky-300 items-center text-2xl font-bold dark:text-white">
-                        <FaTasks className="mr-2" /> To do app
+                        <FaTasks className="mr-2" /> Gestor de Tareas Personales
                     </p>
                     <button
                         onClick={handleLogout}
