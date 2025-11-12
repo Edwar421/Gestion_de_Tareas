@@ -16,6 +16,7 @@ interface InputProps {
     className?: string;
     label?: string;
     isTextarea?: boolean;
+    disabled?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -29,6 +30,7 @@ export const Input: React.FC<InputProps> = ({
     className,
     label,
     isTextarea = false,
+    disabled = false,
 }) => (
     <div className={`relative ${className}`}>
         {label && (

@@ -118,7 +118,7 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
                                 <select
                                     value={filterStatus}
                                     onChange={(e) => setFilterStatus(e.target.value as any)}
-                                    className="text-sm py-2 bg-gray-500 text-white pr-2 pl-3 rounded-lg cursor-pointer"
+                                    className="text-sm py-2 px-3 bg-white dark:bg-gray-600 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer w-36 [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
                                 >
                                     <option value="todas">Estado</option>
                                     <option value="pendiente">Pendiente</option>
@@ -129,22 +129,13 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
                                 <select
                                     value={filterPriority}
                                     onChange={(e) => setFilterPriority(e.target.value as any)}
-                                    className="text-sm py-2 bg-gray-500 text-white pr-2 pl-3 rounded-lg cursor-pointer"
+                                    className="text-sm py-2 px-3 bg-white dark:bg-gray-600 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer w-36 [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
                                 >
                                     <option value="todas">Prioridad</option>
                                     <option value="alta">Alta</option>
                                     <option value="media">Media</option>
                                     <option value="baja">Baja</option>
                                 </select>
-                            </div>
-                            <div className="text-sm bg-gray-500 text-white py-2 px-7 mx-2 rounded-lg">
-                                Pendientes ({pendingTasks.length})
-                            </div>
-                            <div className="text-sm bg-gray-500 text-white py-2 px-7 mx-2 rounded-lg">
-                                En Progreso ({progressTasks.length})
-                            </div>
-                            <div className="text-sm bg-green-100 text-green-800 py-2 px-4 mx-2 rounded-lg border border-green-400">
-                                Completadas ({completedTasks.length})
                             </div>
                         </div>
                     </div>

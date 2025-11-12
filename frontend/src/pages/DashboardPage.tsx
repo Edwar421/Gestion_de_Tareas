@@ -5,7 +5,14 @@ import { getTasks } from "../services/api";
 
 export const DashboardPage: React.FC = () => {
     const [tasks, setTasks] = useState<
-        { id: string; title: string; description: string; completed: boolean }[]
+        {
+            id: string;
+            title: string;
+            description: string;
+            priority: "alta" | "media" | "baja";
+            status: "pendiente" | "en progreso" | "completada";
+            date?: string;
+        }[]
     >([]);
 
     const fetchTasks = async () => {

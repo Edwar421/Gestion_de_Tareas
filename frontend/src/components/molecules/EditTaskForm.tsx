@@ -17,6 +17,8 @@ interface EditTaskFormProps {
 export const EditTaskForm: React.FC<EditTaskFormProps> = ({
     currentTitle,
     currentDescription,
+    currentStatus,
+    currentPriority,
     onTaskUpdated,
     onClose,
     onEdit,
@@ -29,6 +31,8 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
         title?: string;
         description?: string;
     }>({});
+
+    const isCompleted = currentStatus === "completada";
 
     const validate = () => {
         const newErrors: { title?: string; description?: string } = {};
@@ -50,6 +54,21 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
         onTaskUpdated();
         onClose();
     };
+
+    // 🔄 Opciones de cambio de estado válidas
+    const nextStatusOptions = (() => {
+        switch (currentStatus) {
+            case "pendiente":
+                return ["pendiente", "en progreso"];
+            case "en progreso":
+                return ["en progreso", "completada"];
+            case "completada":
+                return ["completada"];
+            default:
+                return ["pendiente"];
+        }
+    })();
+
     return (
         <form onSubmit={handleSubmit} className="px-8 py-4">
             <div>
@@ -59,10 +78,9 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
                     placeholder="Nuevo título"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    disabled={isCompleted} // Bloquear si está completada
                 />
-                {errors.title && (
-                    <p className="text-red-500 text-sm">{errors.title}</p>
-                )}
+                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
             </div>
             <div>
                 <Input
@@ -72,27 +90,52 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     isTextarea={true}
+                    disabled={isCompleted} // Bloquear si está completada
                 />
                 {errors.description && (
                     <p className="text-red-500 text-sm">{errors.description}</p>
                 )}
             </div>
-            <div>
-                <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+            <div className="my-4 flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                    Prioridad:
+                </label>
+                <select
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value as any)}
+                    disabled={isCompleted} // Bloquear si está completada
+                    className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
+                >
                     <option value="alta">Alta</option>
                     <option value="media">Media</option>
                     <option value="baja">Baja</option>
                 </select>
 
-                <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                    <option value="pendiente">Pendiente</option>
-                    <option value="en progreso">En Progreso</option>
-                    <option value="completada">Completada</option>
+                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 mt-2">
+                    Estado:
+                </label>
+                <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value as any)}
+                    disabled={isCompleted} // Bloquear si está completada
+                    className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
+                >
+                    {nextStatusOptions.map((s) => (
+                        <option key={s} value={s}>
+                            {s.charAt(0).toUpperCase() + s.slice(1)}
+                        </option>
+                    ))}
                 </select>
             </div>
-            <Button type="submit">
-                <FaEdit className="mr-2" /> Actualizar Tarea
-            </Button>
+            {!isCompleted ? (
+                <Button type="submit">
+                    <FaEdit className="mr-2" /> Actualizar Tarea
+                </Button>
+            ) : (
+                <p className="text-gray-500 italic mt-3 text-center">
+                    Esta tarea está completada y no se puede editar.
+                </p>
+            )}
         </form>
     );
 };
