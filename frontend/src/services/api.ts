@@ -52,12 +52,14 @@ export const getTasks = async () => {
 export const createTask = async (
     title: string,
     description: string,
-    completed: boolean = false
+    priority: string = "media",
+    status: string = "pendiente"
 ) => {
     const response = await axiosInstance.post(API_URL, {
         title,
         description,
-        completed,
+        priority,
+        status,
     });
     return response.data;
 };
@@ -66,15 +68,18 @@ export const updateTask = async (
     id: number,
     title: string,
     description: string,
-    completed: boolean
+    priority: string,
+    status: string
 ) => {
     const response = await axiosInstance.put(`${API_URL}/${id}`, {
         title,
         description,
-        completed,
+        priority,
+        status,
     });
     return response.data;
 };
+
 
 export const deleteTask = async (id: number) => {
     await axiosInstance.delete(`${API_URL}/${id}`);

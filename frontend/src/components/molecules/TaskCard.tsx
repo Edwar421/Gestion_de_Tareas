@@ -8,7 +8,8 @@ interface TaskCardProps {
     id: string;
     title: string;
     description: string;
-    completed: boolean;
+    priority: string;
+    status: string;
     onTaskUpdated: () => void;
     onTaskEdited: () => void;
     onShowModal: (
@@ -22,20 +23,21 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     id,
     title,
     description,
-    completed,
+    priority,
+    status,
     onTaskUpdated,
     onTaskEdited,
     onShowModal,
 }) => {
-    const [isChecked, setIsChecked] = useState(completed);
+    const [isChecked, setIsChecked] = useState(status === "completada");
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const handleCheckboxChange = async () => {
+        const newStatus = isChecked ? "pendiente" : "completada";
         setIsChecked(!isChecked);
-        await updateTask(parseInt(id), title, description, !isChecked);
+        await updateTask(parseInt(id), title, description, priority, newStatus);
         onTaskUpdated();
     };
-
     const handleDelete = async () => {
         try {
             await deleteTask(parseInt(id));
@@ -55,9 +57,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         }
     };
 
-    const handleEdit = async (newTitle: string, newDescription: string) => {
+    const handleEdit = async (newTitle: string, newDescription: string, newPriority: string, newStatus: string
+    ) => {
         try {
-            await updateTask(parseInt(id), newTitle, newDescription, isChecked);
+            await updateTask(parseInt(id), newTitle, newDescription, newPriority, newStatus);
             onShowModal(
                 "Éxito",
                 "Tarea editada correctamente.",
@@ -91,11 +94,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 <div className="flex items-center h-full mx-2 mt-2.5">
                     <button
                         onClick={handleCheckboxChange}
-                        className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                            isChecked
-                                ? "bg-green-500 text-white border border-green-500"
-                                : "bg-gray-300 text-gray-700"
-                        }`}
+                        className={`w-4 h-4 rounded-full flex items-center justify-center ${isChecked
+                            ? "bg-green-500 text-white border border-green-500"
+                            : "bg-gray-300 text-gray-700"
+                            }`}
                     >
                         {isChecked && <FaCheckCircle className="w-3 h-3" />}
                     </button>
@@ -103,16 +105,14 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
                 <div className="flex-grow min-w-0 break-words">
                     <h3
-                        className={`text-lg font-semibold ${
-                            isChecked ? "line-through" : ""
-                        }`}
+                        className={`text-lg font-semibold ${isChecked ? "line-through" : ""
+                            }`}
                     >
                         {title}
                     </h3>
                     <p
-                        className={`text-gray-600 ${
-                            isChecked ? "line-through" : ""
-                        }`}
+                        className={`text-gray-600 ${isChecked ? "line-through" : ""
+                            }`}
                     >
                         {description}
                     </p>
@@ -143,6 +143,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                     id={id}
                     currentTitle={title}
                     currentDescription={description}
+                    currentPriority={priority}
+                    currentStatus={status}
                     onTaskUpdated={onTaskUpdated}
                     onClose={handleCloseEditModal}
                     onEdit={handleEdit}

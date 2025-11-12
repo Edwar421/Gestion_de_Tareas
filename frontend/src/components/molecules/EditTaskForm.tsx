@@ -7,9 +7,11 @@ interface EditTaskFormProps {
     id: string;
     currentTitle: string;
     currentDescription: string;
+    currentPriority: string;
+    currentStatus: string;
     onTaskUpdated: () => void;
     onClose: () => void;
-    onEdit: (newTitle: string, newDescription: string) => void;
+    onEdit: (newTitle: string, newDescription: string, newPriority: string, newStatus: string) => void;
 }
 
 export const EditTaskForm: React.FC<EditTaskFormProps> = ({
@@ -21,6 +23,8 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 }) => {
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
+    const [priority, setPriority] = useState("media"); 
+    const [status, setStatus] = useState("pendiente");
     const [errors, setErrors] = useState<{
         title?: string;
         description?: string;
@@ -42,11 +46,10 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
-        await onEdit(title, description);
+        await onEdit(title, description, priority, status);
         onTaskUpdated();
         onClose();
     };
-
     return (
         <form onSubmit={handleSubmit} className="px-8 py-4">
             <div>
@@ -73,6 +76,19 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
                 {errors.description && (
                     <p className="text-red-500 text-sm">{errors.description}</p>
                 )}
+            </div>
+            <div>
+                <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+
+                <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="pendiente">En Progreso</option>
+                    <option value="completada">Completada</option>
+                </select>
             </div>
             <Button type="submit">
                 <FaEdit className="mr-2" /> Actualizar Tarea

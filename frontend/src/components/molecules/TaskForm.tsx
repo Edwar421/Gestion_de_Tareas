@@ -11,6 +11,8 @@ interface TaskFormProps {
 export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [priority, setPriority] = useState("media");
+    const [status, setStatus] = useState("pendiente");
     const [errors, setErrors] = useState<{
         title?: string;
         description?: string;
@@ -32,13 +34,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
-        await createTask(title, description);
+        await createTask(title, description, priority, status);
         setTitle("");
         setDescription("");
+        setPriority("media");
+        setStatus("pendiente");
         setErrors({});
         onTaskCreated();
     };
-
     return (
         <form onSubmit={handleSubmit} className="px-8 py-4">
             <div>
@@ -65,6 +68,37 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                 {errors.description && (
                     <p className="text-red-500 text-sm">{errors.description}</p>
                 )}
+            </div>
+            {/* Campo de Prioridad */}
+            <div>
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                    Prioridad
+                </label>
+                <select
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                >
+                    <option value="baja">Baja</option>
+                    <option value="media">Media</option>
+                    <option value="alta">Alta</option>
+                </select>
+            </div>
+
+            {/* Campo de Estado */}
+            <div>
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                    Estado
+                </label>
+                <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                >
+                    <option value="pendiente">Pendiente</option>
+                    <option value="en progreso">En progreso</option>
+                    <option value="completada">Completada</option>
+                </select>
             </div>
             <Button type="submit">
                 <FaPlusCircle className="mr-2" /> Agregar Tarea

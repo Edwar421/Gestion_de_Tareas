@@ -4,8 +4,21 @@ import {
     Column,
     ManyToOne,
     CreateDateColumn,
+    UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
+
+export enum TaskPriority {
+    LOW = "baja",
+    MEDIUM = "media",
+    HIGH = "alta",
+}
+
+export enum TaskStatus {
+    PENDING = "pendiente",
+    IN_PROGRESS = "en progreso",
+    COMPLETED = "completada",
+}
 
 @Entity()
 export class Task {
@@ -15,15 +28,29 @@ export class Task {
     @Column()
     title!: string;
 
-    @Column()
-    description!: string;
+    @Column({ type: "text", nullable: true })
+    description?: string;
 
-    @Column({ default: false })
-    completed!: boolean;
+    @Column({
+        type: "enum",
+        enum: TaskPriority,
+        default: TaskPriority.MEDIUM,
+    })
+    priority!: TaskPriority;
 
-    @ManyToOne(() => User, (user) => user.tasks)
+    @Column({
+        type: "enum",
+        enum: TaskStatus,
+        default: TaskStatus.PENDING,
+    })
+    status!: TaskStatus;
+
+    @ManyToOne(() => User, (user) => user.tasks, { onDelete: "CASCADE" })
     user!: User;
 
     @CreateDateColumn({ type: "timestamp" })
-    date!: Date;
+    createdAt!: Date;
+
+    @UpdateDateColumn({ type: "timestamp" })
+    updatedAt!: Date;
 }
