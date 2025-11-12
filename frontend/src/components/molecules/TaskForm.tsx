@@ -30,10 +30,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                 "La descripción debe tener entre 5 y 200 caracteres.";
         }
         if (!priority) {
-            newErrors.priority = "Debe seleccionar una prioridad.";
+            newErrors.priority = "Debes seleccionar una prioridad.";
         }
         if (!status) {
-            newErrors.status = "Debe seleccionar un estado.";
+            newErrors.status = "Debes seleccionar un estado.";
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -78,10 +78,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                 )}
             </div>
             <div>
-                <label className="block text-gray-700 text-sm font-bold mb-1">
+                <label htmlFor="priority" className="block text-gray-700 text-sm font-bold mb-1">
                     Prioridad
                 </label>
                 <select
+                    id="priority"
+                    name="priority"
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-400 focus:outline-none [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
@@ -96,10 +98,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                 )}
             </div>
             <div>
-                <label className="block text-gray-700 text-sm font-bold mb-1">
+                <label htmlFor="status" className="block text-gray-700 text-sm font-bold mb-1">
                     Estado
                 </label>
                 <select
+                    id="status"
+                    name="status"
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-400 focus:outline-none [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"

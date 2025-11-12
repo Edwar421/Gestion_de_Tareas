@@ -25,7 +25,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 }) => {
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
-    const [priority, setPriority] = useState(currentPriority); 
+    const [priority, setPriority] = useState(currentPriority);
     const [status, setStatus] = useState(currentStatus);
     const [errors, setErrors] = useState<{
         title?: string;
@@ -97,10 +97,12 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
                 )}
             </div>
             <div className="my-4 flex flex-col gap-2">
-                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                <label htmlFor="priority" className="text-sm font-semibold text-gray-600 dark:text-gray-300">
                     Prioridad:
                 </label>
                 <select
+                    id="priority"
+                    name="priority"
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as any)}
                     disabled={isCompleted} // Bloquear si está completada
@@ -111,10 +113,12 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
                     <option value="baja">Baja</option>
                 </select>
 
-                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 mt-2">
+                <label htmlFor="status" className="text-sm font-semibold text-gray-600 dark:text-gray-300 mt-2">
                     Estado:
                 </label>
                 <select
+                    id="status"
+                    name="status"
                     value={status}
                     onChange={(e) => setStatus(e.target.value as any)}
                     disabled={isCompleted} // Bloquear si está completada
