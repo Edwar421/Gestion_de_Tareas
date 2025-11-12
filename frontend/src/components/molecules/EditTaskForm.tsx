@@ -25,8 +25,8 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 }) => {
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
-    const [priority, setPriority] = useState("media"); 
-    const [status, setStatus] = useState("pendiente");
+    const [priority, setPriority] = useState(currentPriority); 
+    const [status, setStatus] = useState(currentStatus);
     const [errors, setErrors] = useState<{
         title?: string;
         description?: string;

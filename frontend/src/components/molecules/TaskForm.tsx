@@ -11,21 +11,29 @@ interface TaskFormProps {
 export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [priority, setPriority] = useState("media");
-    const [status, setStatus] = useState("pendiente");
+    const [priority, setPriority] = useState("");
+    const [status, setStatus] = useState("");
     const [errors, setErrors] = useState<{
         title?: string;
         description?: string;
+        priority?: string;
+        status?: string;
     }>({});
 
     const validate = () => {
-        const newErrors: { title?: string; description?: string } = {};
+        const newErrors: { title?: string; description?: string; priority?: string; status?: string; } = {};
         if (title.length < 3 || title.length > 50) {
             newErrors.title = "El título debe tener entre 3 y 50 caracteres.";
         }
         if (description.length < 5 || description.length > 200) {
             newErrors.description =
                 "La descripción debe tener entre 5 y 200 caracteres.";
+        }
+        if (!priority) {
+            newErrors.priority = "Debe seleccionar una prioridad.";
+        }
+        if (!status) {
+            newErrors.status = "Debe seleccionar un estado.";
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -37,8 +45,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         await createTask(title, description, priority, status);
         setTitle("");
         setDescription("");
-        setPriority("media");
-        setStatus("pendiente");
+        setPriority("");
+        setStatus("");
         setErrors({});
         onTaskCreated();
     };
@@ -78,10 +86,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                     onChange={(e) => setPriority(e.target.value)}
                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-400 focus:outline-none [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
                 >
+                    <option value="">Seleccione una prioridad</option>
                     <option value="baja">Baja</option>
                     <option value="media">Media</option>
                     <option value="alta">Alta</option>
                 </select>
+                {errors.status && (
+                    <p className="text-red-500 text-sm">{errors.priority}</p>
+                )}
             </div>
             <div>
                 <label className="block text-gray-700 text-sm font-bold mb-1">
@@ -92,10 +104,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                     onChange={(e) => setStatus(e.target.value)}
                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-400 focus:outline-none [&>option]:bg-white [&>option]:dark:bg-gray-700 [&>option]:text-gray-900 [&>option]:dark:text-gray-100"
                 >
+                    <option value="">Seleccione un estado</option>
                     <option value="pendiente">Pendiente</option>
                     <option value="en progreso">En progreso</option>
                     <option value="completada">Completada</option>
                 </select>
+                {errors.status && (
+                    <p className="text-red-500 text-sm">{errors.status}</p>
+                )}
             </div>
             <Button type="submit">
                 <FaPlusCircle className="mr-2" /> Agregar Tarea
