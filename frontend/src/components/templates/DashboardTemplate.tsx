@@ -15,8 +15,9 @@ interface DashboardTemplateProps {
         id: string;
         title: string;
         description: string;
-        completed: boolean;
-        date?: string; // Assuming tasks have a date property
+        priority: "alta" | "media" | "baja";
+        status: "pendiente" | "en progreso" | "completada";
+        date?: string;
     }[];
     onAddTask: () => void;
     onDeleteTask: () => void;
@@ -33,7 +34,9 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
     const [modalTitle, setModalTitle] = useState("");
     const [modalMessage, setModalMessage] = useState("");
     const [modalIcon, setModalIcon] = useState<React.ReactNode | null>(null);
-    const [sortByDate, setSortByDate] = useState<"recent" | "oldest">("recent");
+    const [filterStatus, setFilterStatus] = useState<"todas" | "pendiente" | "en progreso" | "completada">("todas");
+    const [filterPriority, setFilterPriority] = useState<"todas" | "alta" | "media" | "baja">("todas");
+
 
     const handleShowModal = (
         title: string,
@@ -57,23 +60,19 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
         window.location.href = "/login";
     };
 
-    const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSortByDate(event.target.value as "recent" | "oldest");
-    };
 
-    const sortedTasks =
-        sortByDate === "recent"
-            ? [...tasks].sort(
-                  (a, b) =>
-                      new Date(b.date!).getTime() - new Date(a.date!).getTime()
-              )
-            : [...tasks].sort(
-                  (a, b) =>
-                      new Date(a.date!).getTime() - new Date(b.date!).getTime()
-              );
+    const filteredTasks = tasks.filter((task) => {
+        const matchesStatus =
+            filterStatus === "todas" || task.status === filterStatus;
+        const matchesPriority =
+            filterPriority === "todas" || task.priority === filterPriority;
+        return matchesStatus && matchesPriority;
+    });
 
-    const pendingTasks = sortedTasks.filter((task) => !task.completed);
-    const completedTasks = sortedTasks.filter((task) => task.completed);
+    const pendingTasks = tasks.filter((task) => task.status === "pendiente");
+    const progressTasks = tasks.filter((task) => task.status === "en progreso");
+    const completedTasks = tasks.filter((task) => task.status === "completada");
+
 
     return (
         <section className="min-h-screen min-w-screen  bg-sky-100/80 dark:bg-gray-900 dark:text-white">
@@ -115,21 +114,34 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
                             </h2>
                         </div>
                         <div className="flex items-center">
-                            <div className="relative">
-                                <FaFilter className="absolute left-5 top-3 text-sm text-sky-300 dark:text-white" />
+                            <div className="flex items-center space-x-2">
                                 <select
-                                    value={sortByDate}
-                                    onChange={handleSortChange}
-                                    className="text-sm py-2 bg-gray-500 text-white py-2 pr-2 pl-8 mx-2 rounded-lg cursor-pointer"
+                                    value={filterStatus}
+                                    onChange={(e) => setFilterStatus(e.target.value as any)}
+                                    className="text-sm py-2 bg-gray-500 text-white pr-2 pl-3 rounded-lg cursor-pointer"
                                 >
-                                    <option value="recent">
-                                        Más recientes
-                                    </option>
-                                    <option value="oldest">Más antiguos</option>
+                                    <option value="todas">Estado</option>
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="en progreso">En progreso</option>
+                                    <option value="completada">Completada</option>
+                                </select>
+
+                                <select
+                                    value={filterPriority}
+                                    onChange={(e) => setFilterPriority(e.target.value as any)}
+                                    className="text-sm py-2 bg-gray-500 text-white pr-2 pl-3 rounded-lg cursor-pointer"
+                                >
+                                    <option value="todas">Prioridad</option>
+                                    <option value="alta">Alta</option>
+                                    <option value="media">Media</option>
+                                    <option value="baja">Baja</option>
                                 </select>
                             </div>
                             <div className="text-sm bg-gray-500 text-white py-2 px-7 mx-2 rounded-lg">
                                 Pendientes ({pendingTasks.length})
+                            </div>
+                            <div className="text-sm bg-gray-500 text-white py-2 px-7 mx-2 rounded-lg">
+                                En Progreso ({progressTasks.length})
                             </div>
                             <div className="text-sm bg-green-100 text-green-800 py-2 px-4 mx-2 rounded-lg border border-green-400">
                                 Completadas ({completedTasks.length})
@@ -137,7 +149,7 @@ export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
                         </div>
                     </div>
                     <TaskList
-                        tasks={sortedTasks}
+                        tasks={filteredTasks}
                         onTaskUpdated={onDeleteTask}
                         onShowModal={handleShowModal}
                     />

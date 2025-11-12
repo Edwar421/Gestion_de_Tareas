@@ -39,7 +39,6 @@ export const TaskList: React.FC<TaskListProps> = ({
                 </div>
             ) : (
                 <>
-                    {/* Pendientes */}
                     <div>
                         <h3 className="flex items-center mb-2 text-lg font-semibold text-gray-700 dark:text-white">
                             <FaClock className="text-md mr-2 mt-1.5 text-sky-300 dark:text-white" />
@@ -59,11 +58,9 @@ export const TaskList: React.FC<TaskListProps> = ({
                             />
                         ))}
                     </div>
-
-                    {/* En progreso */}
                     <div>
                         <h3 className="flex items-center mb-2 text-lg font-semibold text-gray-700 dark:text-white">
-                            <FaClock className="text-md mr-2 mt-1.5 text-yellow-400 dark:text-white" />
+                            <FaClock className="text-md mr-2 mt-1.5 text-orange-400 dark:text-white" />
                             En progreso ({inProgressTasks.length})
                         </h3>
                         {inProgressTasks.map((task) => (
@@ -80,8 +77,6 @@ export const TaskList: React.FC<TaskListProps> = ({
                             />
                         ))}
                     </div>
-
-                    {/* Completadas */}
                     <div>
                         <h3 className="flex items-center mb-2 text-lg font-semibold text-gray-700 dark:text-white">
                             <FaCheckCircle className="text-md mr-2 mt-1.5 text-green-400 dark:text-white" />
