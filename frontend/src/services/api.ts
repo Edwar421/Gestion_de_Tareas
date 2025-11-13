@@ -1,7 +1,7 @@
 import axios from "axios";
 import { refreshToken } from "./auth";
 
-const API_URL = "http://localhost:3000/api/tasks";
+const API_URL = "https://yygiw0mscc.execute-api.us-east-1.amazonaws.com/api/tasks";
 
 const axiosInstance = axios.create();
 

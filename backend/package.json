@@ -8,9 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/app.js",
+    "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "nodemon --exec ts-node src/app.ts"
+    "dev": "nodemon --exec ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.3",
     "reflect-metadata": "^0.2.2",
+    "serverless-http": "^3.2.0",
     "typeorm": "^0.3.21"
   },
   "devDependencies": {

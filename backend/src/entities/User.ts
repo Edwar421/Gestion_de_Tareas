@@ -3,15 +3,15 @@ import { Task } from "./Task";
 
 @Entity()
 export class User {
-    @PrimaryColumn()
-    email!: string;
+  @PrimaryColumn()
+  email!: string;
 
-    @Column()
-    username!: string;
+  @Column()
+  username!: string;
 
-    @Column()
-    password!: string;
+  @Column()
+  password!: string;
 
-    @OneToMany(() => Task, (task) => task.user)
-    tasks!: Task[];
+  @OneToMany(() => Task, (task) => task.user, { cascade: true })
+  tasks!: Task[];
 }
