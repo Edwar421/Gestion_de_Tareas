@@ -14,7 +14,7 @@ export const AuthTemplate: React.FC<AuthTemplateProps> = ({
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                 <FaTasks className="w-8 h-8 mr-2" />
-                To do app
+                Gestor de Tareas
             </div>
             <div className="w-full bg-white rounded-lg shadow-lg shadow-sky-200 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-500">
                 <div className="py-2 sm:pt-6">
